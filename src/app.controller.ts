@@ -1,12 +1,22 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 
-@Controller()
+@Controller('url')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Post('save')
+  saveURL(@Query('url') url) {
+    return this.appService.saveURL(url);
+  }
+
+  @Get('redirect')
+  redirectToShortURL(@Res() res, @Query('url') url) {
+    return this.appService.redirectToShortURL(res, url);
+  }
+
   @Get()
-  getHello(@Res() res) {
-    return this.appService.getHello(res);
+  getAllURLs() {
+    return this.appService.getAllURLs();
   }
 }
